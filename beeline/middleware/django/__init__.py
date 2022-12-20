@@ -85,6 +85,7 @@ class HoneyMiddlewareBase(object):
         self.get_response = get_response
 
     def __call__(self, request):
+        logger.info('HONEYCOMB CALL')
         response = self.create_http_event(request)
         return response
 
@@ -152,6 +153,7 @@ class HoneyMiddlewareBase(object):
                 "request.error_detail", beeline.internal.stringify_exception(exception))
 
     def process_view(self, request, view_func, view_args, view_kwargs):
+        logger.info('HONEYCOMB PROCESS BEFORE CHECK')
         if beeline.get_beeline():
             logger.info('HONEYCOMB PROCESS VIEW WORKS')
             try:
