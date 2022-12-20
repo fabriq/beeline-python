@@ -85,7 +85,7 @@ class HoneyMiddlewareBase(object):
         self.get_response = get_response
 
     def __call__(self, request):
-        logger.info('HONEYCOMB CALL')
+        logger.info('HONEYCOMB BASE CALL')
         response = self.create_http_event(request)
         return response
 
@@ -173,6 +173,7 @@ class HoneyMiddlewareHttp(HoneyMiddlewareBase):
 
 class HoneyMiddleware(HoneyMiddlewareBase):
     def __call__(self, request):
+        logger.info('HONEYCOMB CALL')
         try:
             db_wrapper = HoneyDBWrapper()
             # db instrumentation is only present in Django > 2.0
