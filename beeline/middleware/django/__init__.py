@@ -3,6 +3,9 @@ import datetime
 import beeline
 from beeline.propagation import Request
 from django.db import connections
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class DjangoRequest(Request):
@@ -150,6 +153,7 @@ class HoneyMiddlewareBase(object):
 
     def process_view(self, request, view_func, view_args, view_kwargs):
         if beeline.get_beeline():
+            logger.info('HONEYCOMB PROCESS VIEW WORKS')
             try:
                 beeline.add_context_field("django.view_func", view_func.__name__)
             except AttributeError:
