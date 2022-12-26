@@ -7,6 +7,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+logger.info('HONEYCOMB BEELING MODULE')
+
 
 class DjangoRequest(Request):
     def __init__(self, request):
