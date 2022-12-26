@@ -16,6 +16,8 @@ def eprint(*args, **kwargs):
 
 eprint('HONEYCOMB BEELINE MODULE')
 
+TEST_EXPORT = 'YOLO'
+
 
 class DjangoRequest(Request):
     def __init__(self, request):
