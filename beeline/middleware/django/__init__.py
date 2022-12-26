@@ -5,9 +5,16 @@ from beeline.propagation import Request
 from django.db import connections
 import logging
 
+import sys
+
 logger = logging.getLogger('beeline')
 
-logger.info('HONEYCOMB BEELINE MODULE')
+def eprint(*args, **kwargs):
+    print(*args, file=sys.stderr, **kwargs)
+    logger.info(*args, **kwargs)
+
+
+eprint('HONEYCOMB BEELINE MODULE')
 
 
 class DjangoRequest(Request):
@@ -87,7 +94,7 @@ class HoneyMiddlewareBase(object):
         self.get_response = get_response
 
     def __call__(self, request):
-        logger.info('HONEYCOMB BASE CALL')
+        eprint('HONEYCOMB BASE CALL')
         response = self.create_http_event(request)
         return response
 
@@ -155,9 +162,9 @@ class HoneyMiddlewareBase(object):
                 "request.error_detail", beeline.internal.stringify_exception(exception))
 
     def process_view(self, request, view_func, view_args, view_kwargs):
-        logger.info('HONEYCOMB PROCESS BEFORE CHECK')
+        eprint('HONEYCOMB PROCESS BEFORE CHECK')
         if beeline.get_beeline():
-            logger.info('HONEYCOMB PROCESS VIEW WORKS')
+            eprint('HONEYCOMB PROCESS VIEW WORKS')
             try:
                 beeline.add_context_field("django.view_func", view_func.__name__)
             except AttributeError:
@@ -175,7 +182,7 @@ class HoneyMiddlewareHttp(HoneyMiddlewareBase):
 
 class HoneyMiddleware(HoneyMiddlewareBase):
     def __call__(self, request):
-        logger.info('HONEYCOMB CALL')
+        eprint('HONEYCOMB CALL')
         try:
             db_wrapper = HoneyDBWrapper()
             # db instrumentation is only present in Django > 2.0
