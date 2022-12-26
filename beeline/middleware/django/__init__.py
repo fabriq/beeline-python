@@ -5,9 +5,9 @@ from beeline.propagation import Request
 from django.db import connections
 import logging
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('beeline')
 
-logger.info('HONEYCOMB BEELING MODULE')
+logger.info('HONEYCOMB BEELINE MODULE')
 
 
 class DjangoRequest(Request):
