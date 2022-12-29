@@ -166,7 +166,7 @@ class Tracer(object):
             duration_ms = duration.total_seconds() * 1000.0
             span.event.add_field('duration_ms', duration_ms)
 
-            self._run_hooks_and_send(span)
+            self._run_hooks_and_send(span, self._trace.stack[0])
         else:
             log('warning: span has no event, was it initialized correctly?')
 
@@ -310,7 +310,7 @@ class Tracer(object):
         self.http_trace_parser_hook = http_trace_parser
         self.http_trace_propagation_hook = http_trace_propagation
 
-    def _run_hooks_and_send(self, span):
+    def _run_hooks_and_send(self, span, root_span):
         ''' internal - run any defined hooks on the event and send
 
         kind of hacky: we fetch the hooks from the beeline, but they are only
@@ -319,7 +319,7 @@ class Tracer(object):
         presampled = False
         if self.sampler_hook:
             log("executing sampler hook on event ev = %s", span.event.fields())
-            keep, new_rate = self.sampler_hook(span.event.fields())
+            keep, new_rate = self.sampler_hook(span.event.fields(), root_span.event.fields())
             if not keep:
                 log("skipping event due to sampler hook sampling ev = %s",
                     span.event.fields())
